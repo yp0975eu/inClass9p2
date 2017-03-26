@@ -45,12 +45,24 @@ router.get('/details/:flower', function(req, res, next){
 
 // for adding a flower to db via html form POST
 router.post('/addFlower', function(req, res, next){
-  req.db.collection('flowers').insertOne(req.body, function(err){
-    if (err) {
-      return next(err);
+  // check that the new flower doesn't already exist.
+
+  var lowercase_flower_name = req.body.name.toLowerCase();
+  var first_letter = lowercase_flower_name[0].toUpperCase();
+  var flower_name = first_letter + lowercase_flower_name.slice(1);
+  req.db.collection('flowers').count({name:flower_name}, function(err, count) {
+
+    // Do not save a new flower if there is already a flower with that name in the database.
+    if( count == 0 ){
+      req.db.collection('flowers').insertOne(req.body, function (err) {
+        if (err) {
+          return next(err);
+        }
+      });
     }
     return res.redirect('/');
   });
+
 });
 
 // ajax handler for updating color
