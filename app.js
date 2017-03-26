@@ -22,7 +22,7 @@ MongoClient.connect(url , function(err, db) {
 
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
-  app.engine('.hbs', hbs({ extname : '.hbs'}));
+  app.engine('.hbs', hbs({extname: '.hbs', defaultLayout:'layout'}));
   app.set('view engine', 'hbs');
 
   // uncomment after placing your favicon in /public
