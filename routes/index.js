@@ -79,5 +79,18 @@ router.put('/updateColor', function(req, res, next) {
   })
 });
 
+// ajax handler for deleting flower
+router.delete('/deleteFlower', function(req, res) {
+
+  var filter = { 'name' : req.body.name, 'color': req.body.color };
+
+  req.db.collection('flowers').findOneAndDelete(filter, function(err) {
+    if (err) {
+      return err;
+    }
+      return res.send({'delete' : filter})
+  })
+});
+
 module.exports = router;
 
